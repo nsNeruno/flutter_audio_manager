@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 enum AudioPort {
-  /// unknow 0
-  unknow,
+  /// unknown 0
+  unknown,
 
   /// input 1
   receiver,
@@ -36,7 +36,7 @@ class AudioInput {
 class FlutterAudioManager {
   static const MethodChannel _channel =
       const MethodChannel('flutter_audio_manager');
-  static void Function() _onInputChanged;
+  static void Function()? _onInputChanged;
 
   static Future<String> get platformVersion async {
     final String version = await _channel.invokeMethod('getPlatformVersion');
@@ -84,7 +84,8 @@ class FlutterAudioManager {
     if (_onInputChanged == null) return;
     switch (call.method) {
       case "inputChanged":
-        return _onInputChanged();
+        _onInputChanged?.call();
+        break;
       default:
         break;
     }
